@@ -19,8 +19,12 @@ from helper import get_places, generate_location_desc, extract_details_from_grou
 from secrets_env import GMAPS_API_KEY
 from vertexai.preview.generative_models import Part
 from helper import generate
+import logging
 
-gmaps = googlemaps.Client(GMAPS_API_KEY)
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+
+gmaps = googlemaps.Client("AIzaSyCuAp0PDC2m4MKQX8AR70c_e7rnCgdpsIc")
 
 st.sidebar.image("media/logo-vonovia.png")
 st.sidebar.subheader("Automatisierte Generierung von Immobilien-Exposés")
@@ -41,9 +45,9 @@ if st.session_state.address:
 
     print(f"Received lat, lng: {lat}, {lng}")
 
-    subway_stations = get_places("subway_station", lat, lng)
+    bus_station = get_places("bus_station", lat, lng)
     print("subway stations retrieved")
-    st.dataframe(subway_stations, height=200, use_container_width=True, hide_index=True, column_config=column_config)
+    st.dataframe(bus_station, height=200, use_container_width=True, hide_index=True, column_config=column_config)
 
     st.subheader(":bread: Bäckereien")
     bakeries = get_places("bakery", lat, lng, radius=700)
@@ -65,7 +69,7 @@ if st.session_state.address:
     Nutze valides Markdown
 
     Öffentliche Verkehrsmittel:
-    {subway_stations}
+    {bus_station}
 
     Bäckereien:
     {bakeries}

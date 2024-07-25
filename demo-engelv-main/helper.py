@@ -21,13 +21,15 @@ import streamlit as st
 import googlemaps
 import re
 from secrets_env import GMAPS_API_KEY
+import logging
 
-gmaps = googlemaps.Client(GMAPS_API_KEY)
+
+gmaps = googlemaps.Client("AIzaSyCuAp0PDC2m4MKQX8AR70c_e7rnCgdpsIc")
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "key-app-engelv.json"
 
 def generate(prompt, vision=False):
-   vertexai.init(project="demos-engel-voelkers", location="europe-west3")
+   vertexai.init(project="hooli-420412", location="europe-west3")
 
    if vision:
       model = GenerativeModel("gemini-1.0-pro-vision-001")
@@ -79,9 +81,12 @@ def get_places(type: str, lat: str, lng: str, radius=1000):
 
     places = gmaps.places_nearby(radius=radius, location=f"{lat},{lng}", type=type)
     print("places received")
+    logging.info(places)
     places_extracted = extract_names(places)
+    logging.info(places_extracted)
     places_extracted = eval_json(places_extracted)
     places_with_distances = eval(places_extracted)
+
 
     print("names extracted")
     print(places_extracted)
